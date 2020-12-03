@@ -3,6 +3,7 @@ package com.example.blog.vo;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class CommentVo {
@@ -14,6 +15,16 @@ public class CommentVo {
      * 评论id
      */
     private Integer id;
+
+    /**
+     * 子评论
+     */
+    private List<CommentVo>  commentVoList;
+
+    /**
+     * 父评论
+     */
+    private CommentVo parentCommentVo;
 
     /**
      * 用户昵称

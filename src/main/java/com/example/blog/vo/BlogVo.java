@@ -28,9 +28,9 @@ public class BlogVo {
     private List<CommentVo> commentVoList;
 
     /**
-     * 文章所属标签
+     * 文章所属标签(可能有多个标签)
      */
-    private TagVo tagVo;
+    private List<TagVo> tagVoList;
 
     /**
      * 文章id

@@ -10,12 +10,13 @@ public class IndexController {
     @RequestMapping("/")
     public String index(){
 
-        String blog = "sss";
-        if(blog==null){
-            throw new NotFoundException("文章不存在");
-        }
-
         return "index";
+    }
+
+    @RequestMapping("/login")
+    public String login(){
+
+        return "admin/login";
     }
 
 }

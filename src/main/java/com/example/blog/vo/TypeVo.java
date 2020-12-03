@@ -1,7 +1,7 @@
 package com.example.blog.vo;
 
 
-import com.example.blog.entity.Blog;
+
 import lombok.Data;
 
 import java.util.List;
