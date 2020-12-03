@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +22,7 @@
              管理后台登录
            </div>
          </h2>
-         <form class="ui large form" method="post" action="#">
+         <form class="ui large form" method="post" action="login">
            <div class="ui  segment">
              <div class="field">
                <div class="ui left icon input">
@@ -40,7 +40,7 @@
            </div>
 
            <div class="ui error mini message"></div>
-           <div class="ui mini negative message" >用户名和密码错误</div>
+           <div th:if="${#httpServletRequest.getAttribute('loginfail') != null}" class="ui mini negative message" >用户名或密码错误</div>
 
          </form>
 
@@ -55,6 +55,7 @@
 
 
 <script>
+
   $('.ui.form').form({
     fields : {
       username : {
