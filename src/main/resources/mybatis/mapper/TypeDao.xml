@@ -3,7 +3,7 @@
 <mapper namespace="com.example.blog.dao.TypeDao">
   <resultMap id="BaseResultMap" type="com.example.blog.entity.Type">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="typeName" jdbcType="VARCHAR" property="typename" />
+    <result column="typeName" jdbcType="VARCHAR" property="typeName" />
   </resultMap>
   <sql id="Base_Column_List">
     id, typeName
@@ -20,39 +20,50 @@
       select id,typeName from type limit #{param1},#{param2}
     </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+<!--  查询记录总数-->
+  <select id="count" resultType="java.lang.Integer">
+    select count(id) from type
+  </select>
+
+  <select id="selectByName" resultType="com.example.blog.entity.Type">
+    select * from type where typeName=#{typeName}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from type
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.blog.entity.Type" useGeneratedKeys="true">
     insert into type (typeName)
-    values (#{typename,jdbcType=VARCHAR})
+    values (#{typeName,jdbcType=VARCHAR})
   </insert>
+  
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.blog.entity.Type" useGeneratedKeys="true">
     insert into type
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="typename != null">
+      <if test="typeName != null">
         typeName,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="typename != null">
-        #{typename,jdbcType=VARCHAR},
+      <if test="typeName != null">
+        #{typeName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.blog.entity.Type">
     update type
     <set>
-      <if test="typename != null">
-        typeName = #{typename,jdbcType=VARCHAR},
+      <if test="typeName != null">
+        typeName = #{typeName,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.blog.entity.Type">
     update type
-    set typeName = #{typename,jdbcType=VARCHAR}
+    set typeName = #{typeName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -25,6 +25,15 @@
     from blog
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+    <select id="selectList" resultType="com.example.blog.entity.Blog">
+      select * from blog limit #{param1},#{param2}
+    </select>
+
+  <select id="count" resultType="java.lang.Integer">
+    select count(id) from blog
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from blog
     where id = #{id,jdbcType=INTEGER}

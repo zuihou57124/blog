@@ -20,7 +20,7 @@ public class LoginIntecptor implements HandlerInterceptor {
 
         UserVo user = (UserVo) request.getSession().getAttribute("user");
         if(user==null){
-            response.sendRedirect("/blog/admin/toLogin");
+            response.sendRedirect("/blog/admin/login.html");
 
             return false;
         }

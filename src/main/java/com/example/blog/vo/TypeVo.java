@@ -20,7 +20,7 @@ public class TypeVo {
     /**
      * 分类名称
      */
-    private String typename;
+    private String typeName;
 
     /**
      * 文章列表

@@ -15,8 +15,8 @@
     <div class="ui container">
       <div class="ui inverted secondary stackable menu">
         <h2 class="ui olive header item" style="font-family: STSong">管理后台</h2>
-        <a href="/blog/admin/blogs" class="active m-item item m-mobile-hide"><i class="home icon"></i>文章管理</a>
-        <a href="/blog/admin/types" class=" m-item item m-mobile-hide"><i class="clone outline icon"></i>分类管理</a>
+        <a href="/blog/admin/blogs.html" class="active m-item item m-mobile-hide"><i class="home icon"></i>文章管理</a>
+        <a href="/blog/admin/types.html" class=" m-item item m-mobile-hide"><i class="clone outline icon"></i>分类管理</a>
         <a href="#" class=" m-item item m-mobile-hide"><i class="pencil alternate icon"></i>友链管理</a>
         <a href="#" class=" m-item item m-mobile-hide"><i class="image icon"></i>相册管理</a>
         <div class="right m-item m-mobile-hide menu">
@@ -59,7 +59,7 @@
         <input type="hidden" name="page" >
         <div class="inline fields">
           <div class="field">
-            <input type="text" name="title" placeholder="标题">
+            <input  type="text" name="title" placeholder="标题">
           </div>
           <div class="field">
             <div class="ui labeled action input">
@@ -99,14 +99,14 @@
             <th>操作</th>
           </tr>
           </thead>
-          <tbody>
+          <tbody th:each="blog:${blogs}">
           <tr align="center">
-            <td>1</td>
-            <td>大圣，此去欲何?</td>
-            <td>我的故事</td>
-            <td>是</td>
-            <td>草稿</td>
-            <td>2020-01-02 05:20</td>
+            <td th:text="${blog.id}">1</td>
+            <td th:text="${blog.content}">大圣，此去欲何?</td>
+            <td th:text="${blog.type.typeName}">我的故事</td>
+            <td th:text="${blog.recommend==0}? '是' : '否'">是</td>
+            <td th:text="${blog.published==0}? '已发布' : '草稿'">草稿</td>
+            <td th:text="${blog.createtime}">2020-01-02 05:20</td>
             <td>
               <!--th:href="@{/admin/types/{id}/input(id=${type.id})}"-->
               <a href="#" class="ui mini teal basic button">编辑</a>
@@ -119,19 +119,19 @@
             <th colspan="7">
               <div class="ui inverted divided stackable grid">
                 <div class="three wide column" align="center">
-                  <a class="item">上一页</a>
+                  <a th:href="@{'blogs.html?current='+${page.current - 1}}" class="item">上一页</a>
                 </div>
 
                 <div class="ten wide column" align="center">
-                  <p>第 <span ></span> 页，共 <span></span> 页，有 <span></span> 篇文章</p>
+                  <p>第 <span th:text="${page.current}"></span> 页，共 <span th:text="${page.total}"></span> 页，有 <span th:text="${page.num}"></span> 篇文章</p>
                 </div>
 
                 <div class="three wide column" align="center">
-                  <a class="item">下一页</a>
+                  <a th:href="@{'blogs.html?current='+${page.current + 1}}" class="item">下一页</a>
                 </div>
               </div>
               <div align="center">
-                <a href="#">
+                <a href="/blog/admin/add-blog.html">
                   <button type="button" class="ui teal button m-mobile-wide m-margin-top"><i class="pencil icon"></i>新增</button>
                 </a>
               </div>

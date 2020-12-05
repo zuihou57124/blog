@@ -17,7 +17,7 @@ public class Type implements Serializable {
     /**
      * 分类名称
      */
-    private String typename;
+    private String typeName;
 
     private static final long serialVersionUID = 1L;
 }

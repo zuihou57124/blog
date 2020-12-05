@@ -16,7 +16,7 @@ public class MyConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginIntecptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/admin/toLogin","/","/admin/login","/login")
+                .excludePathPatterns("/admin/login.html","/","/admin/login","/login")
                 //放行静态资源
                 .excludePathPatterns("/static/**");
 

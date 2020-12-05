@@ -20,6 +20,10 @@ public interface TypeDao {
 
     int updateByPrimaryKey(Type record);
 
+    int count();
+
     List<Type> selectList (int start, int offset);
+
+    Type selectByName(String typeName);
 
 }

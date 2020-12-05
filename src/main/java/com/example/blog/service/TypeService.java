@@ -10,9 +10,14 @@ public interface TypeService{
 
     int deleteById(Integer typeId);
 
+    int count();
+
     /**
      * 分页查询
      */
     List<Type> selectList(int start,int offset);
 
+    Type selectById(Integer id);
+
+    int updateById(Type type);
 }

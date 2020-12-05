@@ -32,7 +32,7 @@ public class IndexController {
         return "admin/index";
 }
 
-    @RequestMapping("/toLogin")
+    @RequestMapping("/login.html")
     public String toLogin(){
 
         return "admin/login";
@@ -56,7 +56,7 @@ public class IndexController {
         //密码或用户名错误
         redirectAttributes.addFlashAttribute("loginfail",1);
 
-        return "redirect:/admin/toLogin";
+        return "redirect:/admin/login.html";
     }
 
     /**
@@ -67,7 +67,7 @@ public class IndexController {
 
         request.getSession().removeAttribute("user");
 
-        return "redirect:/admin/toLogin";
+        return "redirect:/admin/login.html";
     }
 
 }
