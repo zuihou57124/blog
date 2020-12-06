@@ -24,4 +24,11 @@ public interface BlogService {
 
     int updateById(Blog blog);
 
+    /**
+     * @param blogId
+     * @param viewsNum
+     * @return
+     * 更新文章浏览数
+     */
+    int addViews(Integer blogId, Integer viewsNum);
 }

@@ -1,4 +1,4 @@
-package com.example.blog.controller.admin;
+package com.example.blog.controller;
 
 import com.example.blog.entity.Blog;
 import com.example.blog.entity.Type;
@@ -25,8 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("admin")
-public class BlogController {
+public class BlogIndexController {
 
     @Autowired
     BlogService blogService;
@@ -34,9 +33,8 @@ public class BlogController {
     @Autowired
     TypeService typeService;
 
-    @RequestMapping("/add-blog.html")
+    @RequestMapping("/blog.html")
     public String addBlogPage(Integer blogId,Model model){
-        List<Type> types = typeService.selectList(0, 10);
         if (blogId != null) {
             Blog blog = blogService.selectById(blogId);
             Type type = typeService.selectById(blog.getTypeId());
@@ -49,38 +47,14 @@ public class BlogController {
             model.addAttribute("blogVo", blogVo);
 
         }
-        model.addAttribute("types",types);
 
-        return "admin/blogs-input";
-    }
-
-    @PostMapping("/add-blog")
-    public String addBlog(Blog blog, RedirectAttributes attributes){
-
-        if(StringUtils.isEmpty(blog.getTitle())){
-            attributes.addFlashAttribute("error","请输入标题");
-            return "redirect:/admin/add-type.html";
-        }
-
-        if(blog.getId()!=null){
-            int update = blogService.updateById(blog);
-        }
-        else {
-            int add = blogService.add(blog);
-            if(add == 0){
-                attributes.addFlashAttribute("error","保存失败,请重试");
-                return "redirect:/admin/add-blog.html";
-            }
-        }
-
-        return "redirect:/admin/blogs.html";
+        return "blog";
     }
 
     @ResponseBody
-    @PostMapping("/del-blog")
-    public Map<String, Object> delBlog(Integer blogId){
-
-        int add = blogService.deleteById(blogId);
+    @RequestMapping("/addViews")
+    public Map<String,Object> addViews(Integer blogId,Integer viewsNum){
+        int flag = blogService.addViews(blogId, viewsNum);
 
         return Re.ok();
     }
@@ -90,7 +64,7 @@ public class BlogController {
      * @param limit 每页显示记录数
      * @return 类型列表
      */
-    @RequestMapping("/blogs.html")
+    @RequestMapping("/index.html")
     public String type(SearchBlogTo search, Integer current, Integer limit, HttpServletRequest request,
                        Model model){
 
@@ -127,7 +101,7 @@ public class BlogController {
         List<Type> types = typeService.selectList(0, 10);
         model.addAttribute("types",types);
 
-        return "admin/blogs";
+        return "index";
     }
 
 }

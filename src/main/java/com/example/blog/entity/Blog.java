@@ -45,22 +45,22 @@ public class Blog implements Serializable {
     /**
      * 是否开启赞赏
      */
-    private Byte appreciation;
+    private Boolean appreciation;
 
     /**
      * 是否可以转载
      */
-    private Byte share;
+    private Boolean share;
 
     /**
      * 是否发布(草稿)
      */
-    private Byte published;
+    private Boolean published;
 
     /**
      * 是否推荐
      */
-    private Byte recommend;
+    private Boolean recommend;
 
     /**
      * 创建日期
@@ -71,6 +71,11 @@ public class Blog implements Serializable {
      * 更新日期
      */
     private Date updatetime;
+
+    /**
+     * 描述
+     */
+    private String description;
 
     private static final long serialVersionUID = 1L;
 }

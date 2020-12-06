@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title></title>
-  <link href="../static/images/me.jpg" th:href="@{/images/me.jpg}" rel="icon" type="image/x-ico">
+  <link href="../static/images/me.jpg" th:href="@{/static/images/me.jpg}" rel="icon" type="image/x-ico">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
-  <link rel="stylesheet" href="../static/css/typo.css" th:href="@{/css/typo.css}">
-  <link rel="stylesheet" href="../static/css/animate.css" th:href="@{/css/animate.css}">
-  <link rel="stylesheet" href="../static/lib/prism/prism.css" th:href="@{/lib/prism/prism.css}">
-  <link rel="stylesheet" href="../static/lib/tocbot/tocbot.css" th:href="@{/lib/tocbot/tocbot.css}">
-  <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
-  <link rel="stylesheet" href="../static/css/timeline.css" th:href="@{/css/timeline.css}">
+  <link rel="stylesheet" href="../static/css/typo.css" th:href="@{/static/css/typo.css}">
+  <link rel="stylesheet" href="../static/css/animate.css" th:href="@{/static/css/animate.css}">
+  <link rel="stylesheet" href="../static/lib/prism/prism.css" th:href="@{/static/lib/prism/prism.css}">
+  <link rel="stylesheet" href="../static/lib/tocbot/tocbot.css" th:href="@{/static/lib/tocbot/tocbot.css}">
+  <link rel="stylesheet" href="../static/css/me.css" th:href="@{/static/css/me.css}">
+  <link rel="stylesheet" href="../static/css/timeline.css" th:href="@{/static/css/timeline.css}">
 
 </head>
 <body>
@@ -55,7 +55,7 @@
       <div class="ui container" align="center">
         <div class="ui horizontal link list" align="center">
           <div class="item">
-            <div class="ui orange basic label" style="font-size: 7px">原创</div>
+            <div th:text="${blogVo?.flag}" class="ui orange basic label" style="font-size: 7px">原创</div>
           </div>
           <div class="item">
             <i class="user outline outline icon m-font-size-text-mini"></i>
@@ -63,18 +63,19 @@
           </div>
           <div class="item">
             <i class="calendar icon m-font-size-text-mini"></i>
-            <span class="m-font-size-text-mini">2020-01-01</span>
+            <span th:text="${blogVo?.createtime}" class="m-font-size-text-mini">2020-01-01</span>
           </div>
           <div class="item">
             <i class="clone icon m-font-size-text-mini"></i>
-            <a href="#" target="_blank" style="color: #ffffff;font-size: 16px">我的故事</a>
+            <a href="#" th:text="${blogVo?.title}" target="_blank" style="color: #ffffff;font-size: 16px">我的故事</a>
           </div>
           <div class="item">
-            <i class="eye icon m-font-size-text-mini"></i> <span class="m-font-size-text-mini">2222</span>
+            <i class="eye icon m-font-size-text-mini"></i>
+            <span th:text="${blogVo?.views}" class="m-font-size-text-mini">2222</span>
           </div>
           <div class="item">
             <i class="comment outline icon m-font-size-text-mini"></i>
-            <span class="m-font-size-text-mini">2222</span>
+            <span th:text="${blogVo?.commentVoList?.size()}" class="m-font-size-text-mini">2222</span>
           </div>
         </div>
       </div>
@@ -465,11 +466,11 @@ h5,h6{font-size:1em;}
           <div class="ui orange basic label">
             <div class="ui images" style="font-size: inherit !important;">
               <div class="image">
-                <img src="../static/images/zhifupay.jpg" th:src="@{/images/zhifupay.jpg}" alt="" class="ui rounded bordered image" style="width: 120px">
+                <img src="../static/images/zhifupay.jpg" th:src="@{/static/images/zhifupay.jpg}" alt="" class="ui rounded bordered image" style="width: 120px">
                 <div>支付宝</div>
               </div>
               <div class="image">
-                <img src="../static/images/wechatpay.jpg" th:src="@{/images/wechatpay.jpg}" alt="" class="ui rounded bordered image" style="width: 120px">
+                <img src="../static/images/wechatpay.jpg" th:src="@{/static/images/wechatpay.jpg}" alt="" class="ui rounded bordered image" style="width: 120px">
                 <div>微信</div>
               </div>
             </div>
@@ -492,7 +493,7 @@ h5,h6{font-size:1em;}
         </div>
         <!--微信公众号-->
         <div class="seven wide column">
-          <img src="../static/images/oneStar1.jpg" th:src="@{/images/oneStar1.jpg}" alt="" class="ui right floated rounded bordered image" style="width: 707px">
+          <img src="../static/images/oneStar1.jpg" th:src="@{/static/images/oneStar1.jpg}" alt="" class="ui right floated rounded bordered image" style="width: 707px">
         </div>
       </div>
     </div>
@@ -669,10 +670,10 @@ h5,h6{font-size:1em;}
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
-<script src="../static/lib/qrcode/qrcode.min.js" th:src="@{/lib/qrcode/qrcode.min.js}"></script>
-<script src="../static/lib/prism/prism.js" th:src="@{/lib/prism/prism.js}"></script>
-<script src="../static/lib/tocbot/tocbot.min.js" th:src="@{/lib/tocbot/tocbot.min.js}"></script>
-<script src="../static/lib/waypoints/jquery.waypoints.min.js" th:src="@{/lib/waypoints/jquery.waypoints.min.js}"></script>
+<script src="../static/lib/qrcode/qrcode.min.js" th:src="@{/static/lib/qrcode/qrcode.min.js}"></script>
+<script src="../static/lib/prism/prism.js" th:src="@{/static/lib/prism/prism.js}"></script>
+<script src="../static/lib/tocbot/tocbot.min.js" th:src="@{/static/lib/tocbot/tocbot.min.js}"></script>
+<script src="../static/lib/waypoints/jquery.waypoints.min.js" th:src="@{/static/lib/waypoints/jquery.waypoints.min.js}"></script>
 
 
 <script th:inline="javascript">

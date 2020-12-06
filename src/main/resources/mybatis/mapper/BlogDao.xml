@@ -16,8 +16,8 @@
         <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, title, content, firstPicture, flag, views, appreciation, `share`, published,
-    recommend, createTime, updateTime
+        id, typeId, title, content, firstPicture, flag, views, appreciation, `share`, published,
+    recommend, description,createTime, updateTime
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -62,13 +62,14 @@
     </delete>
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.blog.entity.Blog"
             useGeneratedKeys="true">
-        insert into blog (title, content, firstPicture,
+        insert into blog (title, typeId,content, firstPicture,
                           flag, views, appreciation,
-                          `share`, published, recommend,
+                          `share`, published, recommend, description,
                           createTime, updateTime)
-        values (#{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{firstpicture,jdbcType=CHAR},
+        values (#{title,jdbcType=VARCHAR}, #{typeId,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR}, #{firstpicture,jdbcType=CHAR},
                 #{flag,jdbcType=CHAR}, #{views,jdbcType=INTEGER}, #{appreciation,jdbcType=TINYINT},
                 #{share,jdbcType=TINYINT}, #{published,jdbcType=TINYINT}, #{recommend,jdbcType=TINYINT},
+                #{description,jdbcType=VARCHAR},
                 #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP})
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.blog.entity.Blog"
@@ -145,6 +146,12 @@
             </if>
         </trim>
     </insert>
+
+    <insert id="addViews">
+        update blog set views = views + #{viewsNum}
+                    where id = #{blogId}
+    </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="com.example.blog.entity.Blog">
         update blog
         <set>
@@ -187,14 +194,16 @@
     <update id="updateByPrimaryKey" parameterType="com.example.blog.entity.Blog">
         update blog
         set title        = #{title,jdbcType=VARCHAR},
+            typeId       = #{typeId,jdbcType=INTEGER},
             content      = #{content,jdbcType=VARCHAR},
-            firstPicture = #{firstpicture,jdbcType=CHAR},
+            firstpicture = #{firstpicture,jdbcType=CHAR},
             flag         = #{flag,jdbcType=CHAR},
             views        = #{views,jdbcType=INTEGER},
             appreciation = #{appreciation,jdbcType=TINYINT},
             `share`      = #{share,jdbcType=TINYINT},
             published    = #{published,jdbcType=TINYINT},
             recommend    = #{recommend,jdbcType=TINYINT},
+            description  = #{description,jdbcType=TINYINT},
             createTime   = #{createtime,jdbcType=TIMESTAMP},
             updateTime   = #{updatetime,jdbcType=TIMESTAMP}
         where id = #{id,jdbcType=INTEGER}

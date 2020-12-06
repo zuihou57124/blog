@@ -17,6 +17,8 @@ public class MyConfig implements WebMvcConfigurer {
         registry.addInterceptor(loginIntecptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/admin/login.html","/","/admin/login","/login")
+                .excludePathPatterns("/index.html","/types.html","/blog.html")
+                .excludePathPatterns("/addViews")
                 //放行静态资源
                 .excludePathPatterns("/static/**");
 

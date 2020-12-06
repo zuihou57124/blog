@@ -65,22 +65,27 @@ public class BlogVo {
     /**
      * 是否开启赞赏
      */
-    private Byte appreciation;
+    private Boolean appreciation;
 
     /**
      * 是否可以转载
      */
-    private Byte share;
+    private Boolean share;
 
     /**
      * 是否发布(草稿)
      */
-    private Byte published;
+    private Boolean published;
 
     /**
      * 是否推荐
      */
-    private Byte recommend;
+    private Boolean recommend;
+
+    /**
+     * 描述
+     */
+    private String description;
 
     /**
      * 创建日期

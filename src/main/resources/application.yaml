@@ -11,6 +11,8 @@ spring:
   #指定静态资源路径
   mvc:
     static-path-pattern: /static/**
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
 
 mybatis:
   #config-location: classpath:mybatis/sqlConfig.xml

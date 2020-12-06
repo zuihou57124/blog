@@ -69,7 +69,9 @@
                             <i class="dropdown icon"></i>
                             <div class="default text">分类</div>
                             <div class="menu">
-                                <div class="item" data-value="1">我的故事</div>
+                                <div th:each="type:${types}" th:data-value="${type.id}" th:text="${type.typeName}"
+                                     class="item">我的故事
+                                </div>
                             </div>
                         </div>
                         <button id="clear-btn" class="ui compact button">clear</button>
@@ -94,7 +96,7 @@
                 <tr align="center">
                     <th>ID</th>
                     <th>标题</th>
-                    <th>类型</th>
+                    <th>分类</th>
                     <th>推荐</th>
                     <th>状态</th>
                     <th>更新时间</th>
@@ -106,14 +108,16 @@
                     <td th:text="${blog.id}">1</td>
                     <td th:text="${blog.title}">大圣，此去欲何?</td>
                     <td th:text="${blog.type.typeName}">我的故事</td>
-                    <td th:text="${blog.recommend==0}? '是' : '否'">是</td>
-                    <td th:text="${blog.published==0}? '已发布' : '草稿'">草稿</td>
-                    <td th:text="${blog.createtime}">2020-01-02 05:20</td>
-                    <td>
+                    <td th:text="${blog.recommend==true}? '是' : '否'">是</td>
+                    <td th:text="${blog.published==true}? '已发布' : '草稿'">草稿</td>
+                    <td th:text="${blog.updatetime}">2020-01-02 05:20</td>
+<!--                    <td>-->
                         <!--th:href="@{/admin/types/{id}/input(id=${type.id})}"-->
-                        <a href="#" class="ui mini teal basic button">编辑</a>
-                        <a href="#" onclick="return confirm('确定要删除该文章吗？三思啊! 删了可就没了！')" class="ui mini red basic button">删除</a>
+                    <td>
+                        <a th:href="@{'add-blog.html?blogId='+${blog.id}}" class="ui mini teal basic button">编辑</a>
+                        <a th:onclick="'delBlog('+${blog.id}+')'" class="ui mini red basic button">删除</a>
                     </td>
+<!--                    </td>-->
                 </tr>
                 </tbody>
                 <tfoot>
@@ -333,6 +337,8 @@
             //     .dropdown('clear');
             $("[name='title']").val('');
             $("[name='typeId']").val('');
+            //$("[class='text']").css('placeholder','分类');
+            $("[class='text']").text('');
             //$("[name='page']").val('');
         });
 
@@ -359,6 +365,31 @@
             title: $("[name='title']").val(),
             typeId: $("[name='typeId']").val(),
             page: $("[name='page']").val()
+        });
+    }
+
+    function delType(typeId) {
+
+        if (confirm('确定要删除该分类吗？三思啊! 删了可就没了！') === false)
+            return false;
+
+        $.ajax({
+            method: "post",
+            url: "/blog/admin/del-type",
+            dataType: "json",
+            data: {typeId: typeId},
+            success(re) {
+                if (re.code === 0) {
+                    alert("删除成功");
+                    location.reload();
+                } else {
+                    alert("删除失败");
+                }
+
+            },
+            error(e) {
+                alert("操作异常");
+            }
         });
     }
 

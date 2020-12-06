@@ -13,7 +13,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +36,19 @@ public class BlogServiceImpl implements BlogService {
      */
     @Override
     public int add(Blog blog) {
+
+        blog.setCreatetime(new Date());
+        if(blog.getAppreciation()==null){
+            blog.setAppreciation(false);
+        }
+        if(blog.getShare()==null){
+            blog.setAppreciation(false);
+        }
+        if(blog.getRecommend()==null){
+            blog.setAppreciation(false);
+        }
+
+        blog.setViews(0);
 
         return blogDao.insert(blog);
     }
@@ -60,15 +79,36 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public List<BlogVo> selectList(int start, int offset, SearchBlogTo search) {
 
-        return blogDao.selectList(start,offset,search)
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        return blogDao.selectList(start, offset, search)
                 .stream()
                 .map((blog -> {
                     BlogVo blogVo = new BlogVo();
-                    BeanUtils.copyProperties(blog,blogVo);
+                    BeanUtils.copyProperties(blog, blogVo);
                     Type type = typeService.selectById(blog.getTypeId());
                     TypeVo typeVo = new TypeVo();
-                    BeanUtils.copyProperties(type,typeVo);
+                    BeanUtils.copyProperties(type, typeVo);
                     blogVo.setType(typeVo);
+
+                    try {
+
+                        if (blogVo.getCreatetime() != null) {
+                            String c = sdf.format(blogVo.getCreatetime());
+                            System.out.println("时间 ------- " + c);
+                            Date time = sdf.parse("2008-07-10 19:20:00");
+                            blogVo.setCreatetime(time);
+                        }
+                        if (blogVo.getUpdatetime() != null) {
+                            String u = sdf.format(blogVo.getUpdatetime());
+                            System.out.println("时间 ------- " + u);
+                            Date time = sdf.parse("2008-07-10 19:20:00");
+                            blogVo.setUpdatetime(time);
+                        }
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
 
                     return blogVo;
                 }))
@@ -87,6 +127,24 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public int updateById(Blog blog) {
 
+        blog.setUpdatetime(new Date());
+
+        if(blog.getAppreciation()==null){
+            blog.setAppreciation(false);
+        }
+        if(blog.getShare()==null){
+            blog.setAppreciation(false);
+        }
+        if(blog.getRecommend()==null){
+            blog.setAppreciation(false);
+        }
+
         return blogDao.updateByPrimaryKey(blog);
+    }
+
+    @Override
+    public int addViews(Integer blogId, Integer viewsNum) {
+
+        return blogDao.addViews(blogId,viewsNum);
     }
 }

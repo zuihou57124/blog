@@ -56,9 +56,6 @@ public class TypeServiceImpl implements TypeService {
         return typeDao.selectList(start,offset);
     }
 
-    /**
-     * 分页查询
-     */
     @Override
     public Type selectById(Integer id) {
 

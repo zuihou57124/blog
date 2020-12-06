@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head >
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ONESTAR-首页</title>
 
-    <link href="../static/images/me.jpg" th:href="@{/images/me.jpg}" rel="icon" type="image/x-ico">
+    <link href="../static/images/me.jpg" th:href="@{/static/images/me.jpg}" rel="icon" type="image/x-ico">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
-    <link rel="stylesheet" href="../../static/lib/editormd/css/editormd.min.css" th:href="@{/lib/editormd/css/editormd.min.css}">
-    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+    <link rel="stylesheet" href="../../static/lib/editormd/css/editormd.min.css" th:href="@{/static/lib/editormd/css/editormd.min.css}">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/static/css/me.css}">
 
 </head>
 <body>
@@ -48,10 +48,10 @@
 
 <!--顶部图片-->
 <div class="m-bg-class_outer" style="width: 100%;height: 750px">
-    <img src="../static/images/bg.jpg" th:src="@{/images/bg.jpg}" alt="" class="ui m-bg image" style="width: 100%;height: 100%">
+    <img src="../static/images/bg.jpg" th:src="@{/static/images/bg.jpg}" alt="" class="ui m-bg image" style="width: 100%;height: 100%">
     <div class="m-bg-class_cover" align="center">
         <div class="m-margin-top-maxx" align="center">
-            <img class="ui circular image" align="center" src="../static/images/me.jpg" th:src="@{/images/me.jpg}" style="width: 150px;height: 150px;">
+            <img class="ui circular image" align="center" src="../static/images/me.jpg" th:src="@{/static/images/me.jpg}" style="width: 150px;height: 150px;">
         </div>
         <div class="m-font-size-title-large" align="center">ONESTAR</div>
 
@@ -65,15 +65,15 @@
         </div>
 
         <div class="ui tencent-qr flowing popup transition hidden">
-            <img src="../static/images/oneStar.jpg" th:src="@{/images/oneStar.jpg}" alt="" class="ui rounded image" style="width: 110px">
+            <img src="../static/images/oneStar.jpg" th:src="@{/static/images/oneStar.jpg}" alt="" class="ui rounded image" style="width: 110px">
             <div align="center">公众号</div>
         </div>
         <div class="ui wechat-qr flowing popup transition hidden">
-            <img src="../static/images/oneStarWechat.jpg" th:src="@{/images/oneStarWechat.jpg}" alt="" class="ui rounded image" style="width: 110px">
+            <img src="../static/images/oneStarWechat.jpg" th:src="@{/static/images/oneStarWechat.jpg}" alt="" class="ui rounded image" style="width: 110px">
             <div align="center">微信</div>
         </div>
         <div class="ui qq-qr flowing popup transition hidden">
-            <img src="../static/images/qq.jpg" th:src="@{/images/qq.jpg}" alt="" class="ui rounded image" style="width: 110px">
+            <img src="../static/images/qq.jpg" th:src="@{/static/images/qq.jpg}" alt="" class="ui rounded image" style="width: 110px">
             <div align="center">QQ</div>
         </div>
 
@@ -110,7 +110,7 @@
     <div class="ui stackable m-container-mini m-opacity grid">
         <div class="m-margin-tb-tiny four wide column">
             <a href="#" class="class_outer" target="_blank">
-                <img src="../static/images/backimg1.jpg" alt="" class="ui rounded image">
+                <img src="/blog/static/images/backimg1.jpg" alt="" class="ui rounded image">
                 <span class="class_cover" >
                      <h4 class="m-font-size-blog-text m-margin-tb-tiny">大圣，此去欲何?</h4>
                   </span>
@@ -132,39 +132,50 @@
                     </div>
                 </div>
                 <!--博文列表-->
-                <div class="ui padded segment m-padded-tb-large m-opacity">
+                <div th:each="blog:${blogs}" class="ui padded segment m-padded-tb-large m-opacity">
                     <div class="ui large aligned mobile reversed stackable grid">
                         <!--博文信息-->
                         <div class="eleven wide column ">
-                            <h3 class="ui header" ><a href="#" target="_blank" class="m-black">大圣，此去欲何?</a></h3>
-                            <p class="m-text m-margin-top-max">戴上金箍，没法爱你；放下金箍，没法保护你。我知道上天不会给我第二次机会，曾经我们说好的永远，原来也仅仅只有，十二画，而已。“大圣，此去欲何?”“踏南天，碎凌霄。”“若一去不回……”“便一去不回” 其实很多时候，我们都是有机会的，最后真正放弃的，是我们自己。......</p>
+                            <h3 class="ui header" >
+                                <p style="cursor: pointer" th:text="${blog?.title}" th:onclick="'viewblog('+${blog?.id}+')'" class="m-black">
+                                    大圣，此去欲何?
+                                </p>
+                            </h3>
+                            <p th:text="${blog.description}" class="m-text m-margin-top-max">
+                                戴上金箍，没法爱你；放下金箍，没法保护你。我知道上天不会给我第二次机会，曾经我们说好的永远，原来也仅仅只有，十二画，而已。“大圣，此去欲何?”“踏南天，碎凌霄。”“若一去不回……”“便一去不回” 其实很多时候，我们都是有机会的，最后真正放弃的，是我们自己。......
+                            </p>
                             <div class="ui m-margin-top-max grid">
                                 <div class="eleven wide column">
                                     <div class="ui mini horizontal link list">
                                         <div class="item">
-                                            <img src="../static/images/me.jpg"  alt="" class="ui avatar image">
+                                            <img src="/blog/static/images/me.jpg"  alt="" class="ui avatar image">
                                             <div class="content"><a href="#" target="_blank" class="header" >oneStar</a></div>
                                         </div>
                                         <div class="item">
-                                            <i class="calendar icon"></i><span>2020-01-01</span>
+                                            <i class="calendar icon"></i>
+                                            <span th:text="${blog?.createtime}">2020-01-01</span>
                                         </div>
                                         <div class="item">
-                                            <i class="eye icon"></i> <span>2222</span>
+                                            <i class="eye icon"></i>
+                                            <span th:text="${blog?.views}">2222</span>
                                         </div>
                                         <div class="item">
-                                            <i class="comment outline icon"></i> <span>2222</span>
+                                            <i class="comment outline icon"></i>
+                                            <span th:text="${blog?.commentVoList?.size()}">2222</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="right aligned five wide column">
-                                    <a href="#" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin">好文</a>
+                                    <a th:text="${blog?.type?.typeName}" href="#" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin">
+                                        好文
+                                    </a>
                                 </div>
                             </div>
                         </div>
                         <!--博文图片-->
                         <div class="five wide column">
                             <a href="#" target="_blank">
-                                <img src="../static/images/backimg1.jpg" alt="" class="ui rounded image">
+                                <img src="/blog/static/images/backimg1.jpg" alt="" class="ui rounded image">
                             </a>
                         </div>
 
@@ -174,7 +185,9 @@
             <!--分页-->
             <div class="ui bottom attached segment m-opacity stackable grid">
                 <div class="three wide column" align="center">
-                    <a class="item">上一页</a>
+                    <a class="item" href="#" th:onclick="'prePage('+${page.current - 1}+')'">
+                        上一页
+                    </a>
                 </div>
 
                 <div class="ten wide column" align="center">
@@ -182,7 +195,9 @@
                 </div>
 
                 <div class="three wide column" align="center">
-                    <a class="item">下一页</a>
+                    <a href="#" th:onclick="'nextPage('+${page.current + 1}+')'" class="item">
+                        下一页
+                    </a>
                 </div>
             </div>
 
@@ -220,7 +235,7 @@
                     <div class="item">
                         <!--微信二维码-->
                         <div style="font-size: large;font-weight: bold" class="ui inverted m-text-thin m-text-spaced " >关注公众号</div>
-                        <img src="../static/images/oneStar.jpg" th:src="@{/images/oneStar.jpg}"  class="ui m-margin-top rounded image" alt="" style="width: 110px">
+                        <img src="../static/images/oneStar.jpg" th:src="@{/static/images/oneStar.jpg}"  class="ui m-margin-top rounded image" alt="" style="width: 110px">
                     </div>
                 </div>
             </div>
@@ -230,7 +245,7 @@
                     <div class="item">
                         <!--微信二维码-->
                         <div style="font-size: large;font-weight: bold" class="ui inverted m-text-thin m-text-spaced " >问题交流（QQ群）</div>
-                        <img src="../static/images/QQ-question.jpg" th:src="@{/images/QQ-question.jpg}"  class="ui m-margin-top rounded image" alt="" style="width: 110px">
+                        <img src="../static/images/QQ-question.jpg" th:src="@{/static/images/QQ-question.jpg}"  class="ui m-margin-top rounded image" alt="" style="width: 110px">
                     </div>
                 </div>
             </div>
@@ -268,12 +283,50 @@
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
-<script src="../static/lib/waypoints/jquery.waypoints.min.js" th:src="@{/lib/waypoints/jquery.waypoints.min.js}"></script>
+<script src="../static/lib/waypoints/jquery.waypoints.min.js" th:src="@{/static/lib/waypoints/jquery.waypoints.min.js}"></script>
 
 <script>
 
     // $('#newblog-container').load(/*[[@{/footer/newblog}]]*/"/footer/newblog");
 
+    function viewblog(blogId) {
+        $.ajax({
+            method: "get",
+            url: "/blog/addViews",
+            dataType: "json",
+            data: {blogId: blogId,viewsNum:1},
+            success(re) {
+                if (re.code === 0) {
+                    location.href = "/blog/blog.html?blogId=" + blogId;
+                    //
+                } else {
+                    //
+                    alert("操作异常,请重试");
+                }
+
+            },
+            error(e) {
+                alert("操作异常");
+            }
+        });
+
+    }
+
+    function prePage(pre) {
+        // title = $("[name='title']").val();
+        // typeId = $("[name='typeId']").val();
+        // page = $("[name='page']").val();
+
+        location.href = "/blog/index.html?"+'current=' + pre;
+    }
+
+    function nextPage(next) {
+        // title = $("[name='title']").val();
+        // typeId = $("[name='typeId']").val();
+        // page = $("[name='page']").val();
+
+        location.href = "/blog/index.html?"+'current=' + next;
+    }
 
     // 运行时间统计
     function secondToDate(second) {

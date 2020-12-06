@@ -24,4 +24,6 @@ public interface BlogDao {
     List<Blog> selectList(int start, int offset, SearchBlogTo search);
 
     int count(SearchBlogTo search);
+
+    int addViews(Integer blogId, Integer viewsNum);
 }
