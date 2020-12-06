@@ -1,178 +1,202 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.blog.dao.BlogDao">
-  <resultMap id="BaseResultMap" type="com.example.blog.entity.Blog">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="content" jdbcType="VARCHAR" property="content" />
-    <result column="firstPicture" jdbcType="CHAR" property="firstpicture" />
-    <result column="flag" jdbcType="CHAR" property="flag" />
-    <result column="views" jdbcType="INTEGER" property="views" />
-    <result column="appreciation" jdbcType="TINYINT" property="appreciation" />
-    <result column="share" jdbcType="TINYINT" property="share" />
-    <result column="published" jdbcType="TINYINT" property="published" />
-    <result column="recommend" jdbcType="TINYINT" property="recommend" />
-    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
-    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, title, content, firstPicture, flag, views, appreciation, `share`, published, 
+    <resultMap id="BaseResultMap" type="com.example.blog.entity.Blog">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="firstPicture" jdbcType="CHAR" property="firstpicture"/>
+        <result column="flag" jdbcType="CHAR" property="flag"/>
+        <result column="views" jdbcType="INTEGER" property="views"/>
+        <result column="appreciation" jdbcType="TINYINT" property="appreciation"/>
+        <result column="share" jdbcType="TINYINT" property="share"/>
+        <result column="published" jdbcType="TINYINT" property="published"/>
+        <result column="recommend" jdbcType="TINYINT" property="recommend"/>
+        <result column="createTime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, title, content, firstPicture, flag, views, appreciation, `share`, published,
     recommend, createTime, updateTime
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from blog
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-
-    <select id="selectList" resultType="com.example.blog.entity.Blog">
-      select * from blog limit #{param1},#{param2}
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from blog
+        where id = #{id,jdbcType=INTEGER}
     </select>
 
-  <select id="count" resultType="java.lang.Integer">
-    select count(id) from blog
-  </select>
+    <!--    分页查询、可带条件-->
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from blog
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.blog.entity.Blog" useGeneratedKeys="true">
-    insert into blog (title, content, firstPicture, 
-      flag, views, appreciation, 
-      `share`, published, recommend, 
-      createTime, updateTime)
-    values (#{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{firstpicture,jdbcType=CHAR}, 
-      #{flag,jdbcType=CHAR}, #{views,jdbcType=INTEGER}, #{appreciation,jdbcType=TINYINT}, 
-      #{share,jdbcType=TINYINT}, #{published,jdbcType=TINYINT}, #{recommend,jdbcType=TINYINT}, 
-      #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.blog.entity.Blog" useGeneratedKeys="true">
-    insert into blog
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="title != null">
-        title,
-      </if>
-      <if test="content != null">
-        content,
-      </if>
-      <if test="firstpicture != null">
-        firstPicture,
-      </if>
-      <if test="flag != null">
-        flag,
-      </if>
-      <if test="views != null">
-        views,
-      </if>
-      <if test="appreciation != null">
-        appreciation,
-      </if>
-      <if test="share != null">
-        `share`,
-      </if>
-      <if test="published != null">
-        published,
-      </if>
-      <if test="recommend != null">
-        recommend,
-      </if>
-      <if test="createtime != null">
-        createTime,
-      </if>
-      <if test="updatetime != null">
-        updateTime,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="title != null">
-        #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null">
-        #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="firstpicture != null">
-        #{firstpicture,jdbcType=CHAR},
-      </if>
-      <if test="flag != null">
-        #{flag,jdbcType=CHAR},
-      </if>
-      <if test="views != null">
-        #{views,jdbcType=INTEGER},
-      </if>
-      <if test="appreciation != null">
-        #{appreciation,jdbcType=TINYINT},
-      </if>
-      <if test="share != null">
-        #{share,jdbcType=TINYINT},
-      </if>
-      <if test="published != null">
-        #{published,jdbcType=TINYINT},
-      </if>
-      <if test="recommend != null">
-        #{recommend,jdbcType=TINYINT},
-      </if>
-      <if test="createtime != null">
-        #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updatetime != null">
-        #{updatetime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.example.blog.entity.Blog">
-    update blog
-    <set>
-      <if test="title != null">
-        title = #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null">
-        content = #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="firstpicture != null">
-        firstPicture = #{firstpicture,jdbcType=CHAR},
-      </if>
-      <if test="flag != null">
-        flag = #{flag,jdbcType=CHAR},
-      </if>
-      <if test="views != null">
-        views = #{views,jdbcType=INTEGER},
-      </if>
-      <if test="appreciation != null">
-        appreciation = #{appreciation,jdbcType=TINYINT},
-      </if>
-      <if test="share != null">
-        `share` = #{share,jdbcType=TINYINT},
-      </if>
-      <if test="published != null">
-        published = #{published,jdbcType=TINYINT},
-      </if>
-      <if test="recommend != null">
-        recommend = #{recommend,jdbcType=TINYINT},
-      </if>
-      <if test="createtime != null">
-        createTime = #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updatetime != null">
-        updateTime = #{updatetime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.example.blog.entity.Blog">
-    update blog
-    set title = #{title,jdbcType=VARCHAR},
-      content = #{content,jdbcType=VARCHAR},
-      firstPicture = #{firstpicture,jdbcType=CHAR},
-      flag = #{flag,jdbcType=CHAR},
-      views = #{views,jdbcType=INTEGER},
-      appreciation = #{appreciation,jdbcType=TINYINT},
-      `share` = #{share,jdbcType=TINYINT},
-      published = #{published,jdbcType=TINYINT},
-      recommend = #{recommend,jdbcType=TINYINT},
-      createTime = #{createtime,jdbcType=TIMESTAMP},
-      updateTime = #{updatetime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    <select id="selectList" resultType="com.example.blog.entity.Blog">
+        select * from blog
+        where 1=1
+        <if test="search.title != null">
+            AND title like CONCAT('%',#{search.title},'%')
+        </if>
+
+        <if test="search.typeId != null">
+            AND typeId = #{search.typeId}
+        </if>
+
+        limit #{start},#{offset}
+    </select>
+
+    <select id="count" resultType="java.lang.Integer" parameterType="com.example.blog.to.SearchBlogTo">
+        select count(id)
+        from blog
+        where 1=1
+        <if test="title != null">
+            AND title like CONCAT('%',#{title},'%')
+        </if>
+
+        <if test="typeId != null">
+            AND typeId = #{typeId}
+        </if>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from blog
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.blog.entity.Blog"
+            useGeneratedKeys="true">
+        insert into blog (title, content, firstPicture,
+                          flag, views, appreciation,
+                          `share`, published, recommend,
+                          createTime, updateTime)
+        values (#{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{firstpicture,jdbcType=CHAR},
+                #{flag,jdbcType=CHAR}, #{views,jdbcType=INTEGER}, #{appreciation,jdbcType=TINYINT},
+                #{share,jdbcType=TINYINT}, #{published,jdbcType=TINYINT}, #{recommend,jdbcType=TINYINT},
+                #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.blog.entity.Blog"
+            useGeneratedKeys="true">
+        insert into blog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">
+                title,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="firstpicture != null">
+                firstPicture,
+            </if>
+            <if test="flag != null">
+                flag,
+            </if>
+            <if test="views != null">
+                views,
+            </if>
+            <if test="appreciation != null">
+                appreciation,
+            </if>
+            <if test="share != null">
+                `share`,
+            </if>
+            <if test="published != null">
+                published,
+            </if>
+            <if test="recommend != null">
+                recommend,
+            </if>
+            <if test="createtime != null">
+                createTime,
+            </if>
+            <if test="updatetime != null">
+                updateTime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="firstpicture != null">
+                #{firstpicture,jdbcType=CHAR},
+            </if>
+            <if test="flag != null">
+                #{flag,jdbcType=CHAR},
+            </if>
+            <if test="views != null">
+                #{views,jdbcType=INTEGER},
+            </if>
+            <if test="appreciation != null">
+                #{appreciation,jdbcType=TINYINT},
+            </if>
+            <if test="share != null">
+                #{share,jdbcType=TINYINT},
+            </if>
+            <if test="published != null">
+                #{published,jdbcType=TINYINT},
+            </if>
+            <if test="recommend != null">
+                #{recommend,jdbcType=TINYINT},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.example.blog.entity.Blog">
+        update blog
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="firstpicture != null">
+                firstPicture = #{firstpicture,jdbcType=CHAR},
+            </if>
+            <if test="flag != null">
+                flag = #{flag,jdbcType=CHAR},
+            </if>
+            <if test="views != null">
+                views = #{views,jdbcType=INTEGER},
+            </if>
+            <if test="appreciation != null">
+                appreciation = #{appreciation,jdbcType=TINYINT},
+            </if>
+            <if test="share != null">
+                `share` = #{share,jdbcType=TINYINT},
+            </if>
+            <if test="published != null">
+                published = #{published,jdbcType=TINYINT},
+            </if>
+            <if test="recommend != null">
+                recommend = #{recommend,jdbcType=TINYINT},
+            </if>
+            <if test="createtime != null">
+                createTime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatetime != null">
+                updateTime = #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.example.blog.entity.Blog">
+        update blog
+        set title        = #{title,jdbcType=VARCHAR},
+            content      = #{content,jdbcType=VARCHAR},
+            firstPicture = #{firstpicture,jdbcType=CHAR},
+            flag         = #{flag,jdbcType=CHAR},
+            views        = #{views,jdbcType=INTEGER},
+            appreciation = #{appreciation,jdbcType=TINYINT},
+            `share`      = #{share,jdbcType=TINYINT},
+            published    = #{published,jdbcType=TINYINT},
+            recommend    = #{recommend,jdbcType=TINYINT},
+            createTime   = #{createtime,jdbcType=TIMESTAMP},
+            updateTime   = #{updatetime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

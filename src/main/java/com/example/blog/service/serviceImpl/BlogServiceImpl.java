@@ -6,6 +6,7 @@ import com.example.blog.entity.Blog;
 import com.example.blog.entity.Type;
 import com.example.blog.service.BlogService;
 import com.example.blog.service.TypeService;
+import com.example.blog.to.SearchBlogTo;
 import com.example.blog.vo.BlogVo;
 import com.example.blog.vo.TypeVo;
 import org.springframework.beans.BeanUtils;
@@ -48,18 +49,18 @@ public class BlogServiceImpl implements BlogService {
      * 查询记录总数
      */
     @Override
-    public int count() {
+    public int count(SearchBlogTo search) {
 
-        return blogDao.count();
+        return blogDao.count(search);
     }
 
     /**
      * 分页查询
      */
     @Override
-    public List<BlogVo> selectList(int start, int offset) {
+    public List<BlogVo> selectList(int start, int offset, SearchBlogTo search) {
 
-        return blogDao.selectList(start,offset)
+        return blogDao.selectList(start,offset,search)
                 .stream()
                 .map((blog -> {
                     BlogVo blogVo = new BlogVo();

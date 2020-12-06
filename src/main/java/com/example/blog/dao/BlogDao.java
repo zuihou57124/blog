@@ -2,6 +2,7 @@ package com.example.blog.dao;
 
 import com.example.blog.entity.Blog;
 import com.example.blog.entity.Type;
+import com.example.blog.to.SearchBlogTo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface BlogDao {
 
     int updateByPrimaryKey(Blog record);
 
-    List<Blog> selectList(int start, int offset);
+    List<Blog> selectList(int start, int offset, SearchBlogTo search);
 
-    int count();
+    int count(SearchBlogTo search);
 }

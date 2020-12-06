@@ -3,6 +3,7 @@ package com.example.blog.controller.admin;
 import com.example.blog.entity.Blog;
 import com.example.blog.entity.Type;
 import com.example.blog.service.BlogService;
+import com.example.blog.to.SearchBlogTo;
 import com.example.blog.utils.PageUtils;
 import com.example.blog.utils.Re;
 import com.example.blog.vo.BlogVo;
@@ -61,7 +62,7 @@ public class BlogController {
      * @return 类型列表
      */
     @RequestMapping("/blogs.html")
-    public String type(Integer current,Integer limit,HttpServletRequest request,
+    public String type(SearchBlogTo search, Integer current, Integer limit, HttpServletRequest request,
                        Model model){
 
         if(current==null || current<=0){
@@ -74,7 +75,7 @@ public class BlogController {
 
         //初始化分页类
         PageUtils page = new PageUtils();
-        page.setNum(blogService.count());
+        page.setNum(blogService.count(search));
         page.setLimit(limit);
         page.setTotal(page.getNum()/page.getLimit() + (page.getNum()%page.getLimit()==0?0:1));
         page.setCurrent(current);
@@ -89,13 +90,12 @@ public class BlogController {
         }
         page.setStart(page.getLimit()*(page.getCurrent()-1));
 
-        List<BlogVo> blogs =blogService.selectList(page.getStart(), page.getLimit());
+        List<BlogVo> blogs =blogService.selectList(page.getStart(), page.getLimit(),search);
         model.addAttribute("blogs",blogs);
         model.addAttribute("page",page);
+        model.addAttribute("search",search);
 
         return "admin/blogs";
     }
-
-
 
 }
