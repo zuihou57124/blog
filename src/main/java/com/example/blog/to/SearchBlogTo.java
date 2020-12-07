@@ -14,4 +14,6 @@ public class SearchBlogTo {
 
     Integer typeId;
 
+    String query;
+
 }

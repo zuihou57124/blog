@@ -17,6 +17,8 @@ public class Blog implements Serializable {
 
     private Integer typeId;
 
+    private Integer userId;
+
     /**
      * 标题
      */

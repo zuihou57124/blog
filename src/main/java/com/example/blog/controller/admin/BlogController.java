@@ -102,9 +102,20 @@ public class BlogController {
             limit = 5;
         }
 
+        List<Type> types = typeService.selectList(0, 10);
+
         //初始化分页类
         PageUtils page = new PageUtils();
         page.setNum(blogService.count(search));
+        if(page.getNum()==0){
+
+            model.addAttribute("blogs",null);
+            model.addAttribute("page",null);
+            model.addAttribute("search",null);
+            model.addAttribute("types",types);
+
+            return "admin/blogs";
+        }
         page.setLimit(limit);
         page.setTotal(page.getNum()/page.getLimit() + (page.getNum()%page.getLimit()==0?0:1));
         page.setCurrent(current);
@@ -123,8 +134,6 @@ public class BlogController {
         model.addAttribute("blogs",blogs);
         model.addAttribute("page",page);
         model.addAttribute("search",search);
-
-        List<Type> types = typeService.selectList(0, 10);
         model.addAttribute("types",types);
 
         return "admin/blogs";

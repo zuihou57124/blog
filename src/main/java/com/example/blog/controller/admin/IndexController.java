@@ -5,6 +5,7 @@ import com.example.blog.exception.NotFoundException;
 import com.example.blog.service.UserService;
 import com.example.blog.vo.UserVo;
 import org.jasypt.encryption.StringEncryptor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,6 +50,7 @@ public class IndexController {
         User user = userService.login(userVo.getUsername(), encryptor.encrypt(userVo.getPassword()));
         if(user!=null && encryptor.decrypt(user.getPassword()).equals(userVo.getPassword())){
 
+            BeanUtils.copyProperties(user,userVo);
             request.getSession().setAttribute("user",userVo);
 
             return "redirect:/admin/";

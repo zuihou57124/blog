@@ -1,6 +1,7 @@
 package com.example.blog.vo;
 
 
+import com.example.blog.entity.User;
 import lombok.Data;
 
 import java.util.Date;
@@ -20,7 +21,7 @@ public class BlogVo {
     /**
      * 文章所属用户id
      */
-    private Integer userId;
+    private User user;
 
     /**
      * 文章的评论

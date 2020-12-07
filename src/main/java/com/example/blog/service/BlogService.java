@@ -31,4 +31,9 @@ public interface BlogService {
      * 更新文章浏览数
      */
     int addViews(Integer blogId, Integer viewsNum);
+
+    /**
+     * @return 推荐文章
+     */
+    List<BlogVo> recommendBlogs();
 }

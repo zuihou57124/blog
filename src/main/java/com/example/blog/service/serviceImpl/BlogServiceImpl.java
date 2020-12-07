@@ -96,13 +96,13 @@ public class BlogServiceImpl implements BlogService {
                         if (blogVo.getCreatetime() != null) {
                             String c = sdf.format(blogVo.getCreatetime());
                             System.out.println("时间 ------- " + c);
-                            Date time = sdf.parse("2008-07-10 19:20:00");
+                            Date time = sdf.parse(c);
                             blogVo.setCreatetime(time);
                         }
                         if (blogVo.getUpdatetime() != null) {
                             String u = sdf.format(blogVo.getUpdatetime());
                             System.out.println("时间 ------- " + u);
-                            Date time = sdf.parse("2008-07-10 19:20:00");
+                            Date time = sdf.parse(u);
                             blogVo.setUpdatetime(time);
                         }
 
@@ -139,12 +139,32 @@ public class BlogServiceImpl implements BlogService {
             blog.setAppreciation(false);
         }
 
-        return blogDao.updateByPrimaryKey(blog);
+        return blogDao.updateByPrimaryKeySelective(blog);
     }
 
     @Override
     public int addViews(Integer blogId, Integer viewsNum) {
 
         return blogDao.addViews(blogId,viewsNum);
+    }
+
+    /**
+     * @return 推荐文章
+     */
+    @Override
+    public List<BlogVo> recommendBlogs() {
+
+        return blogDao.recommendBlogs()
+                .stream()
+                .map((blog -> {
+                    BlogVo blogVo = new BlogVo();
+                    BeanUtils.copyProperties(blog,blogVo);
+                    Type type = typeService.selectById(blog.getTypeId());
+                    TypeVo typeVo = new TypeVo();
+                    BeanUtils.copyProperties(type,typeVo);
+                    blogVo.setType(typeVo);
+
+                    return blogVo;
+                })).collect(Collectors.toList());
     }
 }

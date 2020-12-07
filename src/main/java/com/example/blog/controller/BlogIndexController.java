@@ -2,12 +2,14 @@ package com.example.blog.controller;
 
 import com.example.blog.entity.Blog;
 import com.example.blog.entity.Type;
+import com.example.blog.exception.NotFoundException;
 import com.example.blog.service.BlogService;
 import com.example.blog.service.TypeService;
 import com.example.blog.to.SearchBlogTo;
 import com.example.blog.utils.PageUtils;
 import com.example.blog.utils.Re;
 import com.example.blog.vo.BlogVo;
+import com.example.blog.vo.CountInfoVo;
 import com.example.blog.vo.TypeVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,10 @@ public class BlogIndexController {
 
         }
 
+        else {
+            throw new NotFoundException("没有该文章");
+        }
+
         return "blog";
     }
 
@@ -76,9 +82,19 @@ public class BlogIndexController {
             limit = 5;
         }
 
+        List<Type> types = typeService.selectList(0, 10);
+
         //初始化分页类
         PageUtils page = new PageUtils();
         page.setNum(blogService.count(search));
+        if(page.getNum()==0){
+
+            model.addAttribute("blogs",null);
+            model.addAttribute("page",null);
+            model.addAttribute("search",null);
+            model.addAttribute("types",types);
+            return "admin/blogs";
+        }
         page.setLimit(limit);
         page.setTotal(page.getNum()/page.getLimit() + (page.getNum()%page.getLimit()==0?0:1));
         page.setCurrent(current);
@@ -93,12 +109,17 @@ public class BlogIndexController {
         }
         page.setStart(page.getLimit()*(page.getCurrent()-1));
 
-        List<BlogVo> blogs =blogService.selectList(page.getStart(), page.getLimit(),search);
+        List<BlogVo> blogs = blogService.selectList(page.getStart(), page.getLimit(),search);
+        List<BlogVo> recommendBlogs = blogService.recommendBlogs();
+
+        //CountInfoVo countInfoVo = new CountInfoVo();
+        //countInfoVo.setNum(blogService.count(null));
+        //countInfoVo.setCommentNum();
+
         model.addAttribute("blogs",blogs);
         model.addAttribute("page",page);
         model.addAttribute("search",search);
-
-        List<Type> types = typeService.selectList(0, 10);
+        model.addAttribute("recommendBlogs",recommendBlogs);
         model.addAttribute("types",types);
 
         return "index";

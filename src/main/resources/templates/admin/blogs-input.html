@@ -24,7 +24,7 @@
           <div class="ui dropdown item">
             <div class="text">
               <img class="ui avatar image" src="/blog/static/images/me.jpg">
-              <span>oneStar</span>
+              <span th:text="${session.user?.username}">oneStar</span>
             </div>
             <i class="dropdown icon"></i>
             <div class="menu">
@@ -53,6 +53,7 @@
   <div  class="">
     <div class="ui container">
       <form id="blog-form" action="add-blog" method="post" class="ui form">
+        <input th:value="${session.user?.id}" type="hidden" name="userId">
         <input type="hidden" name="published">
         <input th:value="${blogVo?.id}" type="hidden" name="id">
 

@@ -16,7 +16,7 @@
         <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, typeId, title, content, firstPicture, flag, views, appreciation, `share`, published,
+        id, userId,typeId, title, content, firstPicture, flag, views, appreciation, `share`, published,
     recommend, description,createTime, updateTime
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -31,12 +31,17 @@
     <select id="selectList" resultType="com.example.blog.entity.Blog">
         select * from blog
         where 1=1
-        <if test="search.title != null">
+        <if test="search.title != null and search.title != ''">
             AND title like CONCAT('%',#{search.title},'%')
         </if>
 
-        <if test="search.typeId != null">
+        <if test="search.typeId != null and search.typeId != ''">
             AND typeId = #{search.typeId}
+        </if>
+
+        <if test="search.query != null and search.query != ''">
+            AND (title like CONCAT('%',#{search.query},'%')
+            or content like CONCAT('%',#{search.query},'%'))
         </if>
 
         limit #{start},#{offset}
@@ -46,13 +51,28 @@
         select count(id)
         from blog
         where 1=1
-        <if test="title != null">
+        <if test="title != null and title !=''">
             AND title like CONCAT('%',#{title},'%')
         </if>
 
-        <if test="typeId != null">
+        <if test="typeId != null and typeId != ''">
             AND typeId = #{typeId}
         </if>
+
+        <if test="query != null and query != ''">
+            AND (title like CONCAT('%',#{query},'%')
+            or  content like CONCAT('%',#{query},'%'))
+        </if>
+    </select>
+
+<!--    推荐文章-->
+    <select id="recommendBlogs" resultType="com.example.blog.entity.Blog">
+        select * from blog
+        where views > (select avg(views) from blog where views>0)
+        AND recommend = 1
+        order by createtime desc
+        limit 0,8
+
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -62,11 +82,11 @@
     </delete>
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.blog.entity.Blog"
             useGeneratedKeys="true">
-        insert into blog (title, typeId,content, firstPicture,
+        insert into blog (title, userId,typeId,content, firstPicture,
                           flag, views, appreciation,
                           `share`, published, recommend, description,
                           createTime, updateTime)
-        values (#{title,jdbcType=VARCHAR}, #{typeId,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR}, #{firstpicture,jdbcType=CHAR},
+        values (#{title,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR} ,#{typeId,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR}, #{firstpicture,jdbcType=CHAR},
                 #{flag,jdbcType=CHAR}, #{views,jdbcType=INTEGER}, #{appreciation,jdbcType=TINYINT},
                 #{share,jdbcType=TINYINT}, #{published,jdbcType=TINYINT}, #{recommend,jdbcType=TINYINT},
                 #{description,jdbcType=VARCHAR},
@@ -158,6 +178,15 @@
             <if test="title != null">
                 title = #{title,jdbcType=VARCHAR},
             </if>
+
+            <if test="typeId != null">
+                content = #{typeId,jdbcType=VARCHAR},
+            </if>
+
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+
             <if test="content != null">
                 content = #{content,jdbcType=VARCHAR},
             </if>

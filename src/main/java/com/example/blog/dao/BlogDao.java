@@ -3,6 +3,7 @@ package com.example.blog.dao;
 import com.example.blog.entity.Blog;
 import com.example.blog.entity.Type;
 import com.example.blog.to.SearchBlogTo;
+import com.example.blog.vo.BlogVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -26,4 +27,6 @@ public interface BlogDao {
     int count(SearchBlogTo search);
 
     int addViews(Integer blogId, Integer viewsNum);
+
+    List<Blog> recommendBlogs();
 }

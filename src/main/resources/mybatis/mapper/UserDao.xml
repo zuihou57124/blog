@@ -23,7 +23,7 @@
   </select>
 
     <select id="login" resultType="com.example.blog.entity.User">
-      select userName,password from user
+      select * from user
             where userName=#{userName}
     </select>
 
