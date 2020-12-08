@@ -594,8 +594,8 @@ h5,h6{font-size:1em;}
                 </div>
             </div>
             <div id="comment-form" class="ui form">
-                <input type="hidden" name="blogId">
-                <input type="hidden" name="parentComment.id" value="-1">
+                <input type="hidden" name="blogId" th:value="${blogVo.id}">
+                <input type="hidden" name="parentId" value="-1">
                 <div class="field">
                     <textarea name="content" placeholder="请输入评论信息..."></textarea>
                 </div>
@@ -884,6 +884,19 @@ h5,h6{font-size:1em;}
         $("[name='content']").attr("placeholder", "请输入评论信息...");
     }
 
+    function postData() {
+        $("#comment-container").load("/blog/add-comment",{
+            "parentId" : $("[name='parentComment.id']").val(),
+            "blogId" : $("[name='blogId']").val(),
+            "nickname": $("[name='nickname']").val(),
+            "email"   : $("[name='email']").val(),
+            "content" : $("[name='content']").val()
+        },function (responseTxt, statusTxt, xhr) {
+            //$(window).scrollTo($('#goto'),500);
+            //clearContent();
+        });
+    }
+
 </script>
 
 
@@ -893,8 +906,8 @@ h5,h6{font-size:1em;}
     //
     // $('#newblog-container').load(/*[[@{/footer/newblog}]]*/"/footer/newblog");
 
-    var serurl = /*[[#{blog.serurl}]]*/"127.0.0.1:8080";
-    var url = /*[[@{/blog/{id}(id=${blog.id})}]]*/"";
+    //var serurl = /*[[#{blog.serurl}]]*/"127.0.0.1:8080";
+    //var url = /*[[@{/blog/{id}(id=${blogVo.id})}]]*/"";
     var qrcode = new QRCode("qrcode", {
         text: serurl+url,
         width: 110,
@@ -905,7 +918,7 @@ h5,h6{font-size:1em;}
     });
 
     // $(function () {
-    //     $("#comment-container").load(/*[[@{/comments/{id}(id=${blog.id})}]]*/"comments/6");
+    //     $("#comment-container").load(/*[[@{/comments/{id}(id=${blogVo.id})}]]*/"comments/6");
     // });
 
     // function postData() {

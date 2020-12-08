@@ -6,7 +6,6 @@ import lombok.Data;
 
 /**
  * comment
- * @author 
  */
 @Data
 public class Comment implements Serializable {
@@ -14,6 +13,16 @@ public class Comment implements Serializable {
      * 主键id
      */
     private Integer id;
+
+    /**
+     * 所属文章id
+     */
+    private Integer blogId;
+
+    /**
+     * 父评论id
+     */
+    private Integer parentId;
 
     /**
      * 用户昵称

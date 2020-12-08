@@ -12,9 +12,14 @@ public class CommentVo {
     private Integer blogId;
 
     /**
-     * 评论id
+     * 主键id
      */
     private Integer id;
+
+    /**
+     * 父评论id
+     */
+    private Integer parentId;
 
     /**
      * 子评论

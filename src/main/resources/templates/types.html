@@ -69,7 +69,7 @@
       <div class="ui padded vertical segment m-padded-tb-large">
         <div class="ui middle aligned mobile reversed stackable grid" >
           <div class="eleven wide column">
-            <h3 th:text="${blog?.title}" class="ui header" ><a href="#">大圣，此去欲何?</a></h3>
+            <h3 th:onclick="'viewblog('+${blog?.id}+')'" th:text="${blog?.title}" class="ui header" ><a href="#">大圣，此去欲何?</a></h3>
             <p th:text="${blog?.description}" class="m-text">戴上金箍，没法爱你；放下金箍，没法保护你。我知道上天不会给我第二次机会，曾经我们说好的永远，原来也仅仅只有，十二画，而已。“大圣，此去欲何?”“踏南天，碎凌霄。”“若一去不回……”“便一去不回” 其实很多时候，我们都是有机会的，最后真正放弃的，是我们自己。......</p>
             <div class="ui grid">
               <div class="eleven wide column">
@@ -200,6 +200,30 @@
 <script>
 
     // $('#newblog-container').load(/*[[@{/footer/newblog}]]*/"/footer/newblog");
+
+
+    function viewblog(blogId) {
+      $.ajax({
+        method: "get",
+        url: "/blog/addViews",
+        dataType: "json",
+        data: {blogId: blogId,viewsNum:1},
+        success(re) {
+          if (re.code === 0) {
+            location.href = "/blog/blog.html?blogId=" + blogId;
+            //
+          } else {
+            //
+            alert("操作异常,请重试");
+          }
+
+        },
+        error(e) {
+          alert("操作异常");
+        }
+      });
+
+    }
 
 
     function prePage(pre,typeId) {

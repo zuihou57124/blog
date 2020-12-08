@@ -4,11 +4,13 @@ import com.example.blog.entity.Blog;
 import com.example.blog.entity.Type;
 import com.example.blog.exception.NotFoundException;
 import com.example.blog.service.BlogService;
+import com.example.blog.service.CommentService;
 import com.example.blog.service.TypeService;
 import com.example.blog.to.SearchBlogTo;
 import com.example.blog.utils.PageUtils;
 import com.example.blog.utils.Re;
 import com.example.blog.vo.BlogVo;
+import com.example.blog.vo.CommentVo;
 import com.example.blog.vo.CountInfoVo;
 import com.example.blog.vo.TypeVo;
 import org.springframework.beans.BeanUtils;
@@ -35,14 +37,25 @@ public class BlogIndexController {
     @Autowired
     TypeService typeService;
 
+    @Autowired
+    CommentService commentService;
+
     @RequestMapping("/blog.html")
     public String addBlogPage(Integer blogId,Model model){
         if (blogId != null) {
             Blog blog = blogService.selectById(blogId);
+
+            if(blog==null){
+                throw new NotFoundException("没有该文章");
+            }
+
             Type type = typeService.selectById(blog.getTypeId());
 
             BlogVo blogVo = new BlogVo();
             TypeVo typeVo = new TypeVo();
+            //查询文章的评论
+            List<CommentVo> commentVos = commentService.selectListByBlogId(blogId);
+            blogVo.setCommentVoList(commentVos);
             BeanUtils.copyProperties(blog,blogVo);
             BeanUtils.copyProperties(type,typeVo);
             blogVo.setType(typeVo);
