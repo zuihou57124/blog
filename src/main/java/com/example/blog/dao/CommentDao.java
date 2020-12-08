@@ -1,7 +1,11 @@
 package com.example.blog.dao;
 
 import com.example.blog.entity.Comment;
+import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
+@Mapper
 public interface CommentDao {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +18,10 @@ public interface CommentDao {
     int updateByPrimaryKeySelective(Comment record);
 
     int updateByPrimaryKey(Comment record);
+
+    //查询一级评论
+    List<Comment> selectByBlogId(Integer id);
+
+    //查询子评论
+    List<Comment> selectByParentId(Integer id);
 }
