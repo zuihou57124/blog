@@ -36,4 +36,6 @@ public interface BlogService {
      * @return 推荐文章
      */
     List<BlogVo> recommendBlogs();
+
+    List<BlogVo> selectByTypeId(Type type, Integer id);
 }

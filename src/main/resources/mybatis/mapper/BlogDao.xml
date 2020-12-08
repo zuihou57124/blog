@@ -61,18 +61,24 @@
 
         <if test="query != null and query != ''">
             AND (title like CONCAT('%',#{query},'%')
-            or  content like CONCAT('%',#{query},'%'))
+            or content like CONCAT('%',#{query},'%'))
         </if>
     </select>
 
-<!--    推荐文章-->
+    <!--    推荐文章-->
     <select id="recommendBlogs" resultType="com.example.blog.entity.Blog">
-        select * from blog
-        where views > (select avg(views) from blog where views>0)
-        AND recommend = 1
+        select *
+        from blog
+        where views > (select avg(views) from blog where views > 0)
+          AND recommend = 1
         order by createtime desc
         limit 0,8
 
+    </select>
+
+    <select id="selectListByTypeId" resultType="com.example.blog.entity.Blog">
+        select * from blog
+        where typeId = #{id}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -82,11 +88,12 @@
     </delete>
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.blog.entity.Blog"
             useGeneratedKeys="true">
-        insert into blog (title, userId,typeId,content, firstPicture,
+        insert into blog (title, userId, typeId, content, firstPicture,
                           flag, views, appreciation,
                           `share`, published, recommend, description,
                           createTime, updateTime)
-        values (#{title,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR} ,#{typeId,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR}, #{firstpicture,jdbcType=CHAR},
+        values (#{title,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{typeId,jdbcType=VARCHAR},
+                #{content,jdbcType=VARCHAR}, #{firstpicture,jdbcType=CHAR},
                 #{flag,jdbcType=CHAR}, #{views,jdbcType=INTEGER}, #{appreciation,jdbcType=TINYINT},
                 #{share,jdbcType=TINYINT}, #{published,jdbcType=TINYINT}, #{recommend,jdbcType=TINYINT},
                 #{description,jdbcType=VARCHAR},
@@ -168,8 +175,9 @@
     </insert>
 
     <insert id="addViews">
-        update blog set views = views + #{viewsNum}
-                    where id = #{blogId}
+        update blog
+        set views = views + #{viewsNum}
+        where id = #{blogId}
     </insert>
 
     <update id="updateByPrimaryKeySelective" parameterType="com.example.blog.entity.Blog">

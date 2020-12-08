@@ -1,7 +1,6 @@
 package com.example.blog.service.serviceImpl;
 
 import com.example.blog.dao.BlogDao;
-import com.example.blog.dao.TypeDao;
 import com.example.blog.entity.Blog;
 import com.example.blog.entity.Type;
 import com.example.blog.service.BlogService;
@@ -16,10 +15,8 @@ import org.springframework.stereotype.Service;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,13 +35,13 @@ public class BlogServiceImpl implements BlogService {
     public int add(Blog blog) {
 
         blog.setCreatetime(new Date());
-        if(blog.getAppreciation()==null){
+        if (blog.getAppreciation() == null) {
             blog.setAppreciation(false);
         }
-        if(blog.getShare()==null){
+        if (blog.getShare() == null) {
             blog.setAppreciation(false);
         }
-        if(blog.getRecommend()==null){
+        if (blog.getRecommend() == null) {
             blog.setAppreciation(false);
         }
 
@@ -55,8 +52,7 @@ public class BlogServiceImpl implements BlogService {
 
     /**
      * @param typeId
-     * @return
-     * 删除类型
+     * @return 删除类型
      */
     @Override
     public int deleteById(Integer typeId) {
@@ -129,13 +125,13 @@ public class BlogServiceImpl implements BlogService {
 
         blog.setUpdatetime(new Date());
 
-        if(blog.getAppreciation()==null){
+        if (blog.getAppreciation() == null) {
             blog.setAppreciation(false);
         }
-        if(blog.getShare()==null){
+        if (blog.getShare() == null) {
             blog.setAppreciation(false);
         }
-        if(blog.getRecommend()==null){
+        if (blog.getRecommend() == null) {
             blog.setAppreciation(false);
         }
 
@@ -145,7 +141,7 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public int addViews(Integer blogId, Integer viewsNum) {
 
-        return blogDao.addViews(blogId,viewsNum);
+        return blogDao.addViews(blogId, viewsNum);
     }
 
     /**
@@ -158,13 +154,31 @@ public class BlogServiceImpl implements BlogService {
                 .stream()
                 .map((blog -> {
                     BlogVo blogVo = new BlogVo();
-                    BeanUtils.copyProperties(blog,blogVo);
+                    BeanUtils.copyProperties(blog, blogVo);
                     Type type = typeService.selectById(blog.getTypeId());
                     TypeVo typeVo = new TypeVo();
-                    BeanUtils.copyProperties(type,typeVo);
+                    BeanUtils.copyProperties(type, typeVo);
                     blogVo.setType(typeVo);
 
                     return blogVo;
                 })).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BlogVo> selectByTypeId(Type type, Integer id) {
+
+        List<Blog> blogs = blogDao.selectListByTypeId(id);
+
+        return blogs.stream()
+                .map((blog -> {
+                    BlogVo blogVo = new BlogVo();
+                    BeanUtils.copyProperties(blog, blogVo);
+                    TypeVo typeVo = new TypeVo();
+                    BeanUtils.copyProperties(type, typeVo);
+                    blogVo.setType(typeVo);
+
+                    return blogVo;
+                })).collect(Collectors.toList());
+
     }
 }

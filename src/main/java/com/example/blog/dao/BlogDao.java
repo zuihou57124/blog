@@ -29,4 +29,6 @@ public interface BlogDao {
     int addViews(Integer blogId, Integer viewsNum);
 
     List<Blog> recommendBlogs();
+
+    List<Blog> selectListByTypeId(Integer id);
 }
