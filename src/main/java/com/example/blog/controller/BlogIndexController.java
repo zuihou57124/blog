@@ -45,7 +45,7 @@ public class BlogIndexController {
         if (blogId != null) {
             Blog blog = blogService.selectById(blogId);
 
-            if(blog==null){
+            if(blog==null){ 
                 throw new NotFoundException("没有该文章");
             }
 
@@ -55,8 +55,8 @@ public class BlogIndexController {
             TypeVo typeVo = new TypeVo();
             //查询文章的评论
             List<CommentVo> commentVos = commentService.selectListByBlogId(blogId);
-            blogVo.setCommentVoList(commentVos);
             BeanUtils.copyProperties(blog,blogVo);
+            blogVo.setCommentVoList(commentVos);
             BeanUtils.copyProperties(type,typeVo);
             blogVo.setType(typeVo);
             model.addAttribute("blogVo", blogVo);
