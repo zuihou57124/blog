@@ -41,8 +41,9 @@ public class CommentServiceImpl implements CommentService {
                     CommentVo commentVo = new CommentVo();
                     BeanUtils.copyProperties(comment, commentVo);
                     //查询每个一级评论的子评论
-                    List<CommentVo> children = this.selectListByParentId(comment.getId());
+                    List<CommentVo> children = this.selectListByParentId(commentVo);
                     commentVo.setCommentVoList(children);
+                    commentVo.setParentCommentVo(null);
 
                     return commentVo;
                 }))
@@ -51,19 +52,30 @@ public class CommentServiceImpl implements CommentService {
         return collect;
     }
 
+    @Override
+    public Comment findById(Integer commentId) {
+        return commentDao.selectByPrimaryKey(commentId);
+    }
+
     /**
-     * @param id
+     * @param parentCommentVo
      * @return
      * 查询子评论
      */
     @Override
-    public List<CommentVo> selectListByParentId(Integer id) {
+    public List<CommentVo> selectListByParentId(CommentVo parentCommentVo) {
 
-        List<Comment> comments = commentDao.selectByParentId(id);
+        List<Comment> comments = commentDao.selectByParentId(parentCommentVo.getId());
         List<CommentVo> collect = comments.stream()
                 .map((comment -> {
                     CommentVo commentVo = new CommentVo();
                     BeanUtils.copyProperties(comment, commentVo);
+                    CommentVo parent = new CommentVo();
+                    BeanUtils.copyProperties(parentCommentVo,parent);
+                    parent.setParentCommentVo(null);
+                    parent.setCommentVoList(null);
+                    parent.setParentId(null);
+                    commentVo.setParentCommentVo(parent);
 
                     return commentVo;
                 }))

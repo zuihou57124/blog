@@ -9,8 +9,10 @@ public interface CommentService {
 
     int insert(Comment comment);
 
-    List<CommentVo> selectListByParentId(Integer id);
+    List<CommentVo> selectListByParentId(CommentVo comment);
 
     List<CommentVo> selectListByBlogId(Integer id);
+
+    Comment findById(Integer commentId);
 
 }

@@ -26,6 +26,14 @@ public class CommentIndexController {
             comment.setParentId(0);
         }
 
+        // 如果评论的父评论还存在父评论，就把评论的父评论设置为 评论的父评论的父评论......
+        if(comment.getParentId()!=0){
+            Comment parent = commentService.findById(comment.getParentId());
+            if (parent != null && parent.getParentId()!=0) {
+                comment.setParentId(parent.getParentId());
+            }
+        }
+
         int add = commentService.insert(comment);
 
         return Re.ok();
