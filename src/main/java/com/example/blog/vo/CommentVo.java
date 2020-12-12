@@ -12,6 +12,11 @@ public class CommentVo {
     private Integer blogId;
 
     /**
+     * 关联评论
+     */
+    private CommentVo relative;
+
+    /**
      * 主键id
      */
     private Integer id;

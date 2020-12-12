@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="../static/css/timeline.css" th:href="@{/static/css/timeline.css}">
 
 
-
 </head>
 <body>
 
@@ -550,13 +549,15 @@ h5,h6{font-size:1em;}
                                     <div class="ui mini basic teal left pointing label m-padded-mini">栈主</div>
                                 </a>
                                 <div class="metadata">
-                                    <span th:text="${#dates.format(comment.createtime,'yyyy-MM-dd HH:mm')}" class="date">Today at 5:42PM</span>
+                                    <span th:text="${#dates.format(comment.createtime,'yyyy-MM-dd HH:mm')}"
+                                          class="date">Today at 5:42PM</span>
                                 </div>
                                 <div th:text="${comment.content}" class="text">
                                     How artistic!
                                 </div>
                                 <div class="actions">
-                                    <a class="reply" th:data-commentid="${comment.id}" th:data-commentnickname="${comment.nickname}"
+                                    <a class="reply" th:data-commentid="${comment.id}"
+                                       th:data-commentnickname="${comment.nickname}"
                                        onclick="reply(this)">回复</a>
                                     <a class="delete" href="#" onclick="return confirm('确定要删除该评论吗？三思啊! 删了可就没了！')"
                                        th:if="${session.user}">删除</a>
@@ -572,17 +573,19 @@ h5,h6{font-size:1em;}
                                     <div class="content">
                                         <a class="author">
                                             <span th:text="${childComment.nickname}">小红</span>
-                                            <div class="ui mini basic teal left pointing label m-padded-mini">栈主</div>
-                                            &nbsp;<span class="m-teal">@ 小白</span>
+                                            <div style="display: none" class="ui mini basic teal left pointing label m-padded-mini">栈主</div>
+                                            &nbsp;<span th:if="${childComment?.relative!=null}" th:text="${'@'+childComment.relative?.nickname}" class="m-teal">@ 小白</span>
                                         </a>
                                         <div class="metadata">
-                                            <span th:text="${#dates.format(childComment.createtime,'yyyy-MM-dd HH:mm')}" class="date">Today at 5:42PM</span>
+                                            <span th:text="${#dates.format(childComment.createtime,'yyyy-MM-dd HH:mm')}"
+                                                  class="date">Today at 5:42PM</span>
                                         </div>
                                         <div th:text="${childComment.content}" class="text">
                                             How artistic!
                                         </div>
                                         <div class="actions">
-                                            <a class="reply" th:data-commentid="${childComment.id}" th:data-commentnickname="${childComment.nickname}"
+                                            <a class="reply" th:data-commentid="${childComment.id}"
+                                               th:data-commentnickname="${childComment.nickname}"
                                                onclick="reply(this)">回复</a>
                                         </div>
                                     </div>
@@ -596,6 +599,8 @@ h5,h6{font-size:1em;}
             <div id="comment-form" class="ui form">
                 <input type="hidden" name="blogId" th:value="${blogVo.id}">
                 <input type="hidden" name="parentId" value="0">
+                <input type="hidden" name="relativeId" value="0">
+
                 <div class="field">
                     <textarea name="content" placeholder="请输入评论信息..."></textarea>
                 </div>
@@ -778,6 +783,7 @@ h5,h6{font-size:1em;}
         }
         return time;
     }
+
     function setTime() {
         /*此处为网站的创建时间*/
         var create_time = Math.round(new Date(Date.UTC(2020, 01, 25, 15, 15, 15)).getTime() / 1000);
@@ -788,6 +794,7 @@ h5,h6{font-size:1em;}
             + '秒';
         document.getElementById("htmer_time").innerHTML = currentTimeHtml;
     }
+
     setInterval(setTime, 1000);
 
     $('.menu.toggle').click(function () {
@@ -795,8 +802,8 @@ h5,h6{font-size:1em;}
     });
 
     $('#payButton').popup({
-        popup : $('.payQR.popup'),
-        on : 'click',
+        popup: $('.payQR.popup'),
+        on: 'click',
         position: 'bottom center'
     });
 
@@ -810,16 +817,15 @@ h5,h6{font-size:1em;}
     });
 
     $('.toc.button').popup({
-        popup : $('.toc-container.popup'),
-        on : 'click',
+        popup: $('.toc-container.popup'),
+        on: 'click',
         position: 'left center'
     });
 
     $('.wechat').popup({
-        popup : $('.wechat-qr'),
+        popup: $('.wechat-qr'),
         position: 'left center'
     });
-
 
 
     //评论表单验证
@@ -851,12 +857,12 @@ h5,h6{font-size:1em;}
     });
 
     $('#toTop-button').click(function () {
-        $(window).scrollTo(0,500);
+        $(window).scrollTo(0, 500);
     });
 
     var waypoint = new Waypoint({
         element: document.getElementById('waypoint'),
-        handler: function(direction) {
+        handler: function (direction) {
             if (direction === 'down') {
                 $('#toolbar').show(100);
             } else {
@@ -884,15 +890,16 @@ h5,h6{font-size:1em;}
     }
 
     function postData() {
-        $("#comment-container").load("/blog/add-comment",{
-            "parentId" : $("[name='parentId']").val(),
-            "blogId" : $("[name='blogId']").val(),
+        $("#comment-container").load("/blog/add-comment", {
+            "parentId": $("[name='parentId']").val(),
+            "blogId": $("[name='blogId']").val(),
+            "relativeId": $("[name='relativeId']").val(),
             "nickname": $("[name='nickname']").val(),
-            "email"   : $("[name='email']").val(),
-            "content" : $("[name='content']").val()
-        },function (responseTxt, statusTxt, xhr) {
+            "email": $("[name='email']").val(),
+            "content": $("[name='content']").val()
+        }, function (responseTxt, statusTxt, xhr) {
             location.reload();
-            $(window).scrollTo($('#comment-container'),500);
+            $(window).scrollTo($('#comment-container'), 500);
             clearContent();
         });
     }
@@ -900,9 +907,11 @@ h5,h6{font-size:1em;}
     function reply(obj) {
         var commentId = $(obj).data('commentid');
         var commentNickname = $(obj).data('commentnickname');
-        $("[name='content']").attr("placeholder", "@"+commentNickname).focus();
+
+        $("[name='content']").attr("placeholder", "@" + commentNickname).focus();
         $("[name='parentId']").val(commentId);
-        $(window).scrollTo($('#comment-form'),500);
+        $("[name='relativeId']").val(commentId);
+        $(window).scrollTo($('#comment-form'), 500);
     }
 
 </script>
@@ -917,12 +926,12 @@ h5,h6{font-size:1em;}
     //var serurl = /*[[#{blog.serurl}]]*/"127.0.0.1:8080";
     //var url = /*[[@{/blog/{id}(id=${blogVo.id})}]]*/"";
     var qrcode = new QRCode("qrcode", {
-        text: serurl+url,
+        text: serurl + url,
         width: 110,
         height: 110,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
     });
 
     // $(function () {
@@ -943,14 +952,10 @@ h5,h6{font-size:1em;}
     // }
 
 
-
-
-
 </script>
 
 
 <script th:inline="javascript">
-
 
 
 </script>

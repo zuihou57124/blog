@@ -44,6 +44,7 @@ public class CommentServiceImpl implements CommentService {
                     List<CommentVo> children = this.selectListByParentId(commentVo);
                     commentVo.setCommentVoList(children);
                     commentVo.setParentCommentVo(null);
+                    commentVo.setRelative(null);
 
                     return commentVo;
                 }))
@@ -76,6 +77,12 @@ public class CommentServiceImpl implements CommentService {
                     parent.setCommentVoList(null);
                     parent.setParentId(null);
                     commentVo.setParentCommentVo(parent);
+                    if (comment.getRelativeId() != null && comment.getRelativeId() != 0) {
+                        Comment relative = commentDao.selectByPrimaryKey(comment.getRelativeId());
+                        CommentVo relativeVo = new CommentVo();
+                        BeanUtils.copyProperties(relative,relativeVo);
+                        commentVo.setRelative(relativeVo);
+                    }
 
                     return commentVo;
                 }))

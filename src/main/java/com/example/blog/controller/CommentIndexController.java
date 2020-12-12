@@ -24,6 +24,7 @@ public class CommentIndexController {
         //一级评论 parentId 的值为0
         if (comment.getParentId() == null) {
             comment.setParentId(0);
+            comment.setRelativeId(0);
         }
 
         // 如果评论的父评论还存在父评论，就把评论的父评论设置为 评论的父评论的父评论......

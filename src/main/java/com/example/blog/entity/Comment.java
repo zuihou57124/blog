@@ -25,6 +25,11 @@ public class Comment implements Serializable {
     private Integer parentId;
 
     /**
+     * 关联评论id
+     */
+    private Integer relativeId;
+
+    /**
      * 用户昵称
      */
     private String nickname;

@@ -3,8 +3,9 @@
 <mapper namespace="com.example.blog.dao.CommentDao">
     <resultMap id="BaseResultMap" type="com.example.blog.entity.Comment">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <id column="blogId" jdbcType="INTEGER" property="blogId"/>
-        <id column="parentId" jdbcType="INTEGER" property="parentId"/>
+        <result column="relativeId" jdbcType="INTEGER" property="relativeId"/>
+        <result column="blogId" jdbcType="INTEGER" property="blogId"/>
+        <result column="parentId" jdbcType="INTEGER" property="parentId"/>
         <result column="nickName" jdbcType="VARCHAR" property="nickname"/>
         <result column="email" jdbcType="VARCHAR" property="email"/>
         <result column="picture" jdbcType="VARCHAR" property="picture"/>
@@ -12,7 +13,7 @@
         <result column="createTime" jdbcType="TIMESTAMP" property="createtime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, blogId,parentId, nickName, email, picture, content, createTime
+        id, relativeId,blogId,parentId, nickName, email, picture, content, createTime
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -43,9 +44,9 @@
     </delete>
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.blog.entity.Comment"
             useGeneratedKeys="true">
-        insert into comment (blogId, parentId, nickName, email, picture,
+        insert into comment (blogId,relativeId, parentId, nickName, email, picture,
                              content, createTime)
-        values (#{blogId,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR},
+        values (#{blogId,jdbcType=INTEGER}, #{relativeId,jdbcType=INTEGER},#{parentId,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR},
                 #{email,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR},
                 #{content,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP})
     </insert>
@@ -60,6 +61,11 @@
             <if test="parentId != null">
                 parentId,
             </if>
+
+            <if test="relativeId != null">
+                relativeId,
+            </if>
+
             <if test="nickname != null">
                 nickName,
             </if>
@@ -81,8 +87,13 @@
             <if test="blogId != null">
                 #{blogId,jdbcType=INTEGER},
             </if>
+
             <if test="parentId != null">
                 #{parentId,jdbcType=INTEGER},
+            </if>
+
+            <if test="relativeId != null">
+                #{relativeId,jdbcType=INTEGER},
             </if>
 
             <if test="nickname != null">
